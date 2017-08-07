@@ -13,7 +13,7 @@
 		<div class="header-img">
 			<img src="images/header-img.jpg">
 		</div>
-		<p class="header-title">Home</p>
+		<p class="header-title" id="header_title">Home</p>
 		<div class="header-link">
 			<img title="188-3897-9008" src="images/tell.png">
 			<img title="vickevin2017@163.com" src="images/eml.png">
@@ -24,7 +24,7 @@
 
 
 	<div id="pageContain">
-		<div class="page page1 current">
+		<div  data-title="首页" class="page page1 current">
 			<div class="contain">
 				<div class="page1-body">
 					<img src="images/number.png">
@@ -43,7 +43,7 @@
 			</div>
 		</div>
 
-		<div class="page page2">
+		<div data-title="我可以做" class="page page2">
 			<div class="contain">
 				<div class="page-title">
 					<h3>WHAT CAN WE DO</h3>
@@ -74,7 +74,7 @@
 			</div>
 		</div>
 
-		<div class="page page3">
+		<div data-title="专业技能" class="page page3">
 			<div class="contain">
 				<div class="page-title">
 					<h3>PROFESSIONAl SKILL</h3>
@@ -100,7 +100,7 @@
 		</div>
 
 
-		<div class="page page4">
+		<div data-title="部分作品" class="page page4">
 			<div class="contain">
 				<div class="page-title">
 					<h3>SOME WORKS</h3>
@@ -134,7 +134,7 @@
 				</div>
 		</div>
 
-		<div class="page page5">
+		<div data-title="联系我" class="page page5">
 			<div class="contain">
 				<div class="name">
 					<p>邵鹏晓</p>
@@ -159,28 +159,59 @@
 	</div>
 
 	<ul id="navBar">
-		<li>·</li>
-		<li>·</li>
-		<li>·</li>
-		<li>·</li>
-		<li>·</li>
+		<li title="首页">·</li>
+		<li title="我可以做">·</li>
+		<li title="专业技能">·</li>
+		<li title="部分作品">·</li>
+		<li title="联系我">·</li>
 	</ul>
 
 <script type="text/javascript" src="js/fullPage.min.js"></script>
 <script type="text/javascript">
-	var runPage;
-	runPage = new FullPage({
-		id: 'pageContain',
-		slideTime: 800,
-		effect: {
-			transform: {
-				translate: 'Y'
+	(function(window,document){
+		var runPage, interval, autoPlay;
+
+		autoPlay = function(to) {
+			clearTimeout(interval);
+			interval = setTimeout(function() {
+		    	runPage.go(to);
+			}, 3000);
+		}
+		runPage = new FullPage({
+			id: 'pageContain',
+			slideTime: 800,
+			effect: {
+				transform: {
+					translate: 'Y'
+				},
+				opacity: [0, 1]
 			},
-			opacity: [0, 1]
-		},
-		mode: 'wheel, touch, nav:navBar',
-		easing: 'ease'
-	});
+			mode: 'wheel, touch, nav:navBar',
+			easing: 'ease',
+			callback: function(index, thisPage) {
+				setTitle();
+				index = index + 1 > 3 ? 0 : index + 1;
+				autoPlay(index);
+			}
+		});
+		
+		interval = setTimeout(function() {
+		    runPage.go(runPage.thisPage() + 1);
+		}, 3000);
+
+		function setTitle() {
+			var pages = document.getElementById('pageContain').children;
+			var headerTitle = document.getElementById('header_title');
+			for(var i = 0; i < pages.length; i ++) {
+				var elsClass = pages[i].getAttribute('class');
+				// console.log(typeof elsClass);
+				if(elsClass.indexOf('current') > 0) {
+					var title = pages[i].getAttribute('data-title');
+					headerTitle.innerHTML = title;
+				}
+			}
+		};
+	})(window,document)
 </script>
 </body>
 </html>
