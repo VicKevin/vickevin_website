@@ -20,6 +20,13 @@ overflow: hidden; font: 14px/1.5 "Microsoft YaHei", Helvetica, STHeiti STXihei, 
 
 .txt { margin-top: 20%; font-size: 50px; color: #fff; text-align: center;}
 
+#navBar li img {
+	width: 30px;
+	height: 30px;
+}
+
+
+
 .header {
 	position: fixed;
 	box-sizing: border-box;
